@@ -9,3 +9,10 @@
         fillers (map (fn [_] (* lfo2 (sin-osc:ar (ranged-rand 40 1000) :phase 0))) (range 0 100))]
     (out:ar 0  (* (mix:ar fillers)
                   (env-gen:kr (perc attack decay) :action FREE)))))
+
+(defsynth space-organ [out-bus 0 tone 1 duration 3 amp 1]
+  (let [f     (map #(midicps (duty:kr % 0 (dseq 2 4))) [1])
+        tones (map #(blip (* % %2) (mul-add:kr (lf-noise1:kr 1/8) 2 4)) f [tone])]
+    (out out-bus (* amp (g-verb (sum tones) 200 8) (line 1 0 duration FREE)))))
+
+(comment (space-organ :tone 30))
