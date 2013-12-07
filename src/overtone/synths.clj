@@ -17,6 +17,25 @@
     (out out-bus (* amp (g-verb (sum tones) 200 8) (line 1 0 duration FREE)))))
 
 (comment (space-organ :tone 30))
+
+
+(defsynth alien-wail [freq 380 out-bus 0 vibrato-speed 6 vibrato-depth 4 lag-val 0.5 gate 1]
+  (let [trig (impulse:kr 3)
+        freqs (dseq  [400 750 2400 2600 2900])
+        freqs (demand:kr trig 0 freqs)
+        amps  (dseq [1 0.28 0.08 0.1 0.01])
+        amps  (demand:kr trig 0 amps)
+        qs (dseq [0.1 0.1 0.04 0.04 0.04])
+        qs (demand:kr trig 0 qs)
+        vibrato (* vibrato-depth (sin-osc:kr vibrato-speed))
+        in (saw:ar (lag:kr (+ freq vibrato) 0.2))
+        env (env-gen:kr (env-asr 1) gate 2)
+        snd (* (lag:kr amps lag-val) (bpf:ar in (lag:kr freqs lag-val) (lag:kr qs lag-val)))]
+    (out out-bus (* snd env))))
+
+(alien-wail :freq 200)
+(kill alien-wail)
+
 ;;Based on Formant Synthesis Singers by Bruno Ruviaro http://sccode.org/1-4Uz
 (defsynth sing [freq 380
                 freq0 400  freq1 750 freq2 2400 freq3 2600 freq4 2900
