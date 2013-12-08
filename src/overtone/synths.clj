@@ -29,7 +29,7 @@
         qs (demand:kr trig 0 qs)
         vibrato (* vibrato-depth (sin-osc:kr vibrato-speed))
         in (saw:ar (lag:kr (+ freq vibrato) 0.2))
-        env (env-gen:kr (env-asr 1) gate 2)
+        env (env-gen:kr (env-asr 1) gate FREE)
         snd (* (lag:kr amps lag-val) (bpf:ar in (lag:kr freqs lag-val) (lag:kr qs lag-val)))]
     (out out-bus (* snd env))))
 
@@ -48,7 +48,7 @@
 
         vibrato (* vibrato-depth (sin-osc:kr vibrato-speed))
         in (saw:ar (lag:kr (+ freq vibrato) 0.2))
-        env (env-gen:kr (env-asr 1) gate 2)
+        env (env-gen:kr (env-asr 1) gate FREE)
         snd (mix (* amps-list (bpf:ar in freqs-list qs-list)))]
     (out out-bus (* snd env))))
 
@@ -65,7 +65,7 @@
     :I [[350 1700 2700 3700 4950] [0 -20 -30 -36 -60] [50 100 120 150 200]]
     :O [[450 800 2830 3500 4950]  [0 -9 -16 -28 -55]  [70 80 100 130 135]]
     :U [[325 700 2530 3500 4950]  [0 -12 -30 -40 -64] [50 60 170 180 200]]}
-   :counterTenor
+   :counter-tenor
    {:A [[660 1120 2750 3000 3350] [0 -6 -23 -24 -38]  [80 90 120 130 140]]
     :E [[440 1800 2700 3000 3300] [0 -14 -18 -20 -20] [70 80 100 120 120]]
     :I [[270 1850 2900 3350 3590] [0 -24 -24 -36 -36] [40 90 100 120 120]]
@@ -98,13 +98,17 @@
 (def tenor   (sing :freq 280))
 (def alto    (sing :freq 380))
 (def soprano (sing :freq 580))
+(def counter-tenor (sing :freq 280))
 
-(apply ctl bass (settings-for :bass :A))
-(apply ctl bass (settings-for :bass :E))
-(apply ctl bass (settings-for :bass :I))
-(apply ctl bass (settings-for :bass :O))
-(apply ctl bass (settings-for :bass :U))
+(def v alto)
 
+(apply ctl v (settings-for :bass :A))
+(apply ctl v (settings-for :bass :E))
+(apply ctl v (settings-for :bass :I))
+(apply ctl v (settings-for :bass :O))
+(apply ctl v (settings-for :bass :U))
+
+(kill counter-tenor)
 (kill bass)
 (kill tenor)
 (kill alto)
