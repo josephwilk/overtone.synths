@@ -113,3 +113,16 @@
 (kill tenor)
 (kill alto)
 (kill soprano)
+
+;;http://sccode.org/1-4TB
+(defsynth soft-phasing [freq 440 out-bus 0]
+  (out out-bus
+       (pm-osc:ar
+        (sin-osc:kr 0.1 freq)
+        (+ (/ freq 2) (sin-osc:kr (* freq 0.01) Math/PI))
+        1
+        (pm-osc:ar 4 2 1 0 (pm-osc:ar (* freq 0.01) 2 1))
+        (sin-osc:kr 0.1))))
+
+(soft-phasing)
+(kill soft-phasing)
