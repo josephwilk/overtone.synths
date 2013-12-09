@@ -10,6 +10,10 @@
     (out:ar 0  (* (mix:ar fillers)
                   (env-gen:kr (perc attack decay) :action FREE)))))
 
+(comment
+  (fallout-wind)
+  (kill fallout-wind))
+
 ;; Based on SpaceOrgan from emacs-live snippets
 (defsynth space-organ [out-bus 0 tone 1 duration 3 amp 1]
   (let [f     (map #(midicps (duty:kr % 0 (dseq 2 4))) [1])
@@ -17,7 +21,6 @@
     (out out-bus (* amp (g-verb (sum tones) 200 8) (line 1 0 duration FREE)))))
 
 (comment (space-organ :tone 30))
-
 
 (defsynth alien-wail [freq 380 out-bus 0 vibrato-speed 6 vibrato-depth 4 lag-val 0.5 gate 1]
   (let [trig (impulse:kr 3)
@@ -33,8 +36,9 @@
         snd (* (lag:kr amps lag-val) (bpf:ar in (lag:kr freqs lag-val) (lag:kr qs lag-val)))]
     (out out-bus (* snd env))))
 
-(alien-wail :freq 200)
-(kill alien-wail)
+(comment
+  (alien-wail :freq 200)
+  (kill alien-wail))
 
 ;;Based on Formant Synthesis Singers by Bruno Ruviaro http://sccode.org/1-4Uz
 (defsynth sing [freq 380
@@ -100,29 +104,34 @@
 (def soprano (sing :freq 580))
 (def counter-tenor (sing :freq 280))
 
-(def v alto)
+(comment
+  (def v alto)
 
-(apply ctl v (settings-for :bass :A))
-(apply ctl v (settings-for :bass :E))
-(apply ctl v (settings-for :bass :I))
-(apply ctl v (settings-for :bass :O))
-(apply ctl v (settings-for :bass :U))
+  (apply ctl v (settings-for :bass :A))
+  (apply ctl v (settings-for :bass :E))
+  (apply ctl v (settings-for :bass :I))
+  (apply ctl v (settings-for :bass :O))
+  (apply ctl v (settings-for :bass :U))
 
-(kill counter-tenor)
-(kill bass)
-(kill tenor)
-(kill alto)
-(kill soprano)
+  (kill counter-tenor)
+  (kill bass)
+  (kill tenor)
+  (kill alto)
+  (kill soprano))
 
 ;;http://sccode.org/1-4TB
-(defsynth soft-phasing [freq 440 out-bus 0]
-  (out out-bus
-       (pm-osc:ar
-        (sin-osc:kr 0.1 freq)
-        (+ (/ freq 2) (sin-osc:kr (* freq 0.01) Math/PI))
-        1
-        (pm-osc:ar 4 2 1 0 (pm-osc:ar (* freq 0.01) 2 1))
-        (sin-osc:kr 0.1))))
+(defsynth soft-phasing [freq 440 out-bus 0 amp 1]
+  (let [car-freq (sin-osc:kr 0.1 freq)
+        mod-freq (+ (/ freq 2) (sin-osc:kr (* freq 0.01) Math/PI))
+        pm-index 1
+        mod-phase (* (pm-osc:ar 4 2 1 0) (pm-osc:ar (* freq 0.01) 2 1))]
+    (out out-bus (* amp
+                    (pm-osc:ar car-freq mod-freq pm-index mod-phase)))))
 
-(soft-phasing)
-(kill soft-phasing)
+(comment
+  (def s (soft-phasing :freq 400))
+  (def s (soft-phasing :freq 500))
+  (def s (soft-phasing :freq 300))
+  (ctl s :amp 0)
+
+  (kill soft-phasing))
