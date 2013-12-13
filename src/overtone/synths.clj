@@ -98,14 +98,14 @@
                   :qs0 (/ qs0 freq0) :qs1 (/ qs1 freq1) :qs2 (/ qs2 freq2) :qs3 (/ qs3 freq3) :qs4 (/ qs4 freq4)}]
     (interleave (keys settings) (vals settings))))
 
-(def bass    (sing :freq 100))
-(def tenor   (sing :freq 280))
-(def alto    (sing :freq 380))
-(def soprano (sing :freq 580))
-(def counter-tenor (sing :freq 280))
+(defn bass          []  (sing :freq 100))
+(defn tenor         []  (sing :freq 280))
+(defn alto          []  (sing :freq 380))
+(defn soprano       [] (sing :freq 580))
+(defn counter-tenor [] (sing :freq 280))
 
 (comment
-  (def v alto)
+  (def v (alto))
 
   (apply ctl v (settings-for :bass :A))
   (apply ctl v (settings-for :bass :E))
