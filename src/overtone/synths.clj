@@ -135,3 +135,12 @@
   (ctl s :amp 0)
 
   (kill soft-phasing))
+
+(defsynth touch-wood [note 60 out-bus 0 amp 5]
+  (let [freq (midicps note)
+        src (bpf:ar (* (white-noise:ar) (line:kr 5 0 0.02)) freq 0.03)
+        amp amp]
+    (out:ar out-bus (* amp (pan2:ar src)))))
+
+(comment
+  (wood :note 62))
