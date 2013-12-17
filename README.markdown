@@ -6,8 +6,8 @@ Synths:
  * space-organ  (listen: https://soundcloud.com/josephwilk/space-organ)
  * alien-wail   (listen: https://soundcloud.com/josephwilk/alien-wail-synth)
  * sing         (listen: https://soundcloud.com/josephwilk/sing-synth)
- * soft-phasing (listen: https://soundcloud.com/josephwilk/soft-phasing-synth
-
+ * soft-phasing (listen: https://soundcloud.com/josephwilk/soft-phasing-synth)
+ * touch-wood   (listen: https://soundcloud.com/josephwilk/touch-wood-synth)
 
 
 ## Dependency
